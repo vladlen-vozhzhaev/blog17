@@ -5,6 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-
+    {% for article in articles %}
+        <h2>{{article.title}}</h2>
+        <small>{{article.author}}</small>
+        <hr>
+    {% endfor %}
 </body>
 </html>
