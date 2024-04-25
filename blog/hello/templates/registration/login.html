@@ -10,16 +10,17 @@
     <div class="container">
         <h2 class="text-center my-3">Авторизация</h2>
         <div class="col-sm-6 mx-auto">
-            <form action="" method="post">
+            <form method="post">
                 {% csrf_token %}
-                <div class="mb-3">
+                {{form.as_p}}
+                <!--<div class="mb-3">
                     <label for="">Email</label>
                     <input name="email" type="email" class="form-control" placeholder="Email">
                 </div>
                 <div class="mb-3">
                     <label for="">Пароль</label>
                     <input name="pass" type="password" class="form-control" placeholder="Пароль">
-                </div>
+                </div>-->
                 <div class="mb-3">
                     <input type="submit" class="form-control btn btn-primary" value="Войти">
                 </div>

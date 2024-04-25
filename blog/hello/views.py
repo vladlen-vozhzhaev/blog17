@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db import connection
+
+from .forms import CustomUserCreationForm
 from .models import Article
+from django.contrib.auth.forms import UserCreationForm
 def index(request):
     articles = Article.objects.all()
     return render(request, 'index.html', {'articles': articles})
@@ -44,5 +47,15 @@ def addArticle(request):
 def editArticle():
     pass
 
-def singleArticle():
-    pass
+def singleArticle(request, id):
+    article = Article.objects.get(id=id)
+    return render(request, 'singleArticle.html', {'article': article})
+def singup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})

@@ -1,14 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {% for article in articles %}
-        <h2>{{article.title}}</h2>
-        <small>{{article.author}}</small>
-        <hr>
-    {% endfor %}
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                {% for article in articles %}
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href="/article/{{article.id}}">
+                            <h2 class="post-title">
+                                {{article.title}}
+                            </h2>
+                        </a>
+                        <p class="post-meta">
+                            Опубликовал
+                            {{article.author}}
+                        </p>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
