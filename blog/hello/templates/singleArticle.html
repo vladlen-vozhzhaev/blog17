@@ -7,8 +7,57 @@
                     {{article.content}}
                     <hr>
                     Автор: {{article.author}}
+                    <hr>
+                    <form onsubmit="sendForm(this); return false" action="/addComment" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="article_id" value="{{article.id}}">
+                        <div class="mb-3">
+                            <textarea name="comment" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <input type="submit" class="form-control btn btn-primary" value="Добавить комментарий">
+                        </div>
+                    </form>
+                    <hr>
+                    <div id="comment-container">
+                        <h4>Комментарии</h4>
+                        {% for comment in comments %}
+                            <div class="border p-3 my-1">
+                                <p class="my-1"><strong>Пользователь: </strong> {{comment.user_id}}</p>
+                                <p class="my-1">{{comment.comment}}</p>
+                                <p class="my-1">{{comment.datetime}}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </article>
+    <script>
+        const commentContainer = document.getElementById("comment-container");
+        function sendForm(form){
+            const formData = new FormData(form);
+            fetch('/addComment', {
+                method: "POST",
+                body: formData
+            }).then(response=>response.json())
+                .then(result=>{
+                    if(result.result == 'success'){
+                        const div = document.createElement('div');
+                        const p1 = document.createElement('p');
+                        const p2 = document.createElement('p');
+                        const p3 = document.createElement('p');
+                        div.classList.add("border", "p-3", "my-1");
+                        p1.classList.add("my-1")
+                        p2.classList.add("my-1")
+                        p3.classList.add("my-1")
+                        p1.innerHTML = `<strong>Пользователь: </strong> Вы`;
+                        p2.innerHTML = formData.get('comment');
+                        p3.innerHTML = `Сейчас`;
+                        div.append(p1, p2, p3);
+                        commentContainer.append(div);
+                    }
+                })
+        }
+    </script>
 {% endblock %}

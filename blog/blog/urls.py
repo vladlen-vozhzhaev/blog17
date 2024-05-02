@@ -32,4 +32,5 @@ urlpatterns = [
     path('addArticle', views.addArticle),
     path('editArticle/<int:id>', views.editArticle),
     path('article/<int:id>', views.singleArticle),
+    path('addComment', views.addComment)
 ]

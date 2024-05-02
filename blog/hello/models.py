@@ -8,3 +8,8 @@ class Article(models.Model):
 
 def __str__(self):
     return self.title
+
+class Comment(models.Model):
+    user_id = models.IntegerField()
+    comment = models.TextField()
+    article_id = models.IntegerField()

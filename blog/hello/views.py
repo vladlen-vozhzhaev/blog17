@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.db import connection
 
 from .forms import CustomUserCreationForm
 from .models import Article
 from django.contrib.auth.forms import UserCreationForm
+from .models import Comment
 def index(request):
     articles = Article.objects.all()
     return render(request, 'index.html', {'articles': articles})
@@ -49,7 +50,8 @@ def editArticle():
 
 def singleArticle(request, id):
     article = Article.objects.get(id=id)
-    return render(request, 'singleArticle.html', {'article': article})
+    comments = Comment.objects.filter(article_id=id)
+    return render(request, 'singleArticle.html', {'article': article, 'comments':comments})
 def singup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -59,3 +61,12 @@ def singup(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+def addComment(request):
+    if request.method == 'POST':
+        userId = request.session.get('_auth_user_id')
+        comment = request.POST.get('comment')
+        articleId = request.POST.get('article_id')
+        commentModel = Comment(user_id = userId, comment = comment, article_id = articleId)
+        commentModel.save()
+        return JsonResponse({'result':'success'})
